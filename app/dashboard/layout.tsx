@@ -1,4 +1,5 @@
 import { SidebarNav } from "@/components/dashboard/SidebarNav";
+import { BrandLogo } from "@/components/ui/BrandLogo";
 
 export default function DashboardLayout({
   children,
@@ -11,15 +12,7 @@ export default function DashboardLayout({
       <aside className="w-52 shrink-0 border-r border-[#1e1e1e] bg-black flex flex-col sticky top-0 h-screen">
         {/* Logo */}
         <div className="px-5 py-5 border-b border-[#1e1e1e]">
-          <div className="flex items-center gap-2.5">
-            <div className="size-8 rounded-lg bg-[#FFC400] flex items-center justify-center glow-gold-sm">
-              <span className="text-black text-[11px] font-black tracking-tight font-display">鎧</span>
-            </div>
-            <div>
-              <p className="text-[13px] font-black text-white leading-none tracking-wide font-display">MoltWall</p>
-              <p className="text-[10px] text-[#555] mt-0.5 font-sans">Agent Security Firewall</p>
-            </div>
-          </div>
+          <BrandLogo variant="full" size="sm" />
         </div>
 
         {/* Nav */}

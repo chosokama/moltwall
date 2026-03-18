@@ -17,10 +17,15 @@ const barlowCondensed = Barlow_Condensed({
 });
 
 export const metadata: Metadata = {
-  title: "MoltWall 鎧 — AI Agent Security Firewall",
+  title: "MoltWall — AI Agent Security Firewall",
   description:
     "Production-grade security firewall for AI agents. Evaluate, control, and audit every agent action before execution.",
   keywords: ["AI security", "agent firewall", "MCP", "tool safety", "prompt injection", "MoltWall"],
+  metadataBase: new URL("https://www.moltwall.xyz"),
+  icons: {
+    icon: "/icon.png",
+    apple: "/icon.png",
+  },
 };
 
 export default function RootLayout({

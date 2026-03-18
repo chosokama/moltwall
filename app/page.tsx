@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { GridCanvas } from "@/components/ui/GridCanvas";
 import { Navbar } from "@/components/landing/Navbar";
+import { BrandLogo } from "@/components/ui/BrandLogo";
 
 const FEATURES = [
   {
@@ -86,8 +87,8 @@ export default function LandingPage() {
             <Link href="/dashboard"
               className="inline-flex items-center gap-2.5 bg-[#FFC400] text-black font-black text-[13px] uppercase tracking-widest px-8 py-4 rounded-xl hover:bg-[#e6b000] transition-all font-display shadow-[0_0_40px_rgba(255,196,0,0.2)]">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M8 1L1.5 4v4.5c0 3.5 2.8 5.8 6.5 6.5 3.7-.7 6.5-3 6.5-6.5V4L8 1z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
-                <path d="M5 8l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M8 1L1.5 4v4.5c0 3.5 2.8 5.8 6.5 6.5 3.7-.7 6.5-3 6.5-6.5V4L8 1z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                <path d="M5 8l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
               Launch Dashboard
             </Link>
@@ -265,33 +266,19 @@ if (result.decision === "allow") {
 
       {/* ── Footer ──────────────────────────────────────────────────────────── */}
       <footer className="border-t border-[#111] bg-black py-14">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-
-          {/* Brand */}
-          <Link href="/" className="inline-block text-[18px] font-black tracking-[0.2em] font-display text-white hover:text-[#FFC400] transition-colors uppercase">
-            MoltWall
-          </Link>
-
-          {/* Separator */}
-          <p className="mt-3 text-[#FFC400]/60 font-display text-lg leading-none" aria-hidden="true">鎧</p>
-
-          {/* Primary link + nav */}
-          <div className="mt-2 space-y-1">
-            <Link href="/dashboard" className="block text-[14px] font-medium text-[#666] hover:text-white transition-colors lowercase tracking-wide">
-              dashboard
-            </Link>
-            <p className="text-[11px] text-[#333] font-sans">
-              <Link href="/docs" className="text-[#444] hover:text-[#FFC400] transition-colors">Docs</Link>
-              <span className="mx-2 text-[#222]">·</span>
-              <Link href="/dashboard" className="text-[#444] hover:text-[#FFC400] transition-colors">Dashboard</Link>
-              <span className="mx-2 text-[#222]">·</span>
-              <a href="https://github.com" target="_blank" rel="noreferrer" className="text-[#444] hover:text-[#FFC400] transition-colors">GitHub</a>
-            </p>
+        <div className="max-w-6xl mx-auto px-6 text-center space-y-4">
+          <div className="flex justify-center">
+            <BrandLogo variant="full" size="md" withTagline />
           </div>
-
-          {/* Copyright */}
-          <p className="mt-8 text-[12px] text-[#333] font-sans">
-            © {new Date().getFullYear()}
+          <div className="mt-1 space-x-3 text-[11px] text-[#444] font-sans">
+            <Link href="/docs" className="hover:text-[#FFC400] transition-colors">Docs</Link>
+            <span>·</span>
+            <Link href="/dashboard" className="hover:text-[#FFC400] transition-colors">Dashboard</Link>
+            <span>·</span>
+            <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-[#FFC400] transition-colors">GitHub</a>
+          </div>
+          <p className="pt-2 text-[12px] text-[#333] font-sans">
+            © {new Date().getFullYear()} · www.moltwall.xyz
           </p>
         </div>
       </footer>
