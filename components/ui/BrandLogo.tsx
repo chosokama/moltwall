@@ -26,7 +26,7 @@ export function BrandLogo({
         className="inline-flex flex-col items-center min-w-0"
         style={{ gap: withTagline ? "2px" : "0" }}
       >
-        {/* Logo image — horizontal, fixed height, auto width */}
+        {/* Logo image -horizontal, fixed height, auto width */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/logo.png"

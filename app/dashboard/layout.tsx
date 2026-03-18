@@ -22,7 +22,7 @@ export default function DashboardLayout({
         <div className="px-5 py-4 border-t border-[#1e1e1e] mt-auto">
           <div className="flex items-center gap-2">
             <span className="size-1.5 rounded-full bg-[#FFC400] glow-gold-sm" />
-            <p className="text-[11px] text-[#555] font-sans">v0.1.0 — Active</p>
+            <p className="text-[11px] text-[#555] font-sans">v0.1.0 -Active</p>
           </div>
         </div>
       </aside>

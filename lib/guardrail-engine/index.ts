@@ -1,19 +1,19 @@
 /**
- * Guardrail Engine — Orchestrator
+ * Guardrail Engine -Orchestrator
  *
  * Runs all security scanners against a check request or scan payload and
  * produces a consolidated GuardrailResult:
  *
- *   1. Prompt Injection Scanner  — instruction override, jailbreak, data extraction
- *   2. Credential Scanner        — secrets/keys in arg values
- *   3. PII Scanner               — personal data in arg values
+ *   1. Prompt Injection Scanner  -instruction override, jailbreak, data extraction
+ *   2. Credential Scanner        -secrets/keys in arg values
+ *   3. PII Scanner               -personal data in arg values
  *
  * The result includes:
- *   - threats[]         — all findings with severity and field paths
- *   - should_deny       — true if any CRITICAL threat is found
- *   - risk_boost        — additional score to add to the risk engine output
- *   - passed            — true if no high/critical threats found
- *   - reason            — human-readable summary for the check response
+ *   - threats[]         -all findings with severity and field paths
+ *   - should_deny       -true if any CRITICAL threat is found
+ *   - risk_boost        -additional score to add to the risk engine output
+ *   - passed            -true if no high/critical threats found
+ *   - reason            -human-readable summary for the check response
  *
  * Integration point: call runGuardrails() after the policy engine and before
  * the risk engine in the check route pipeline.
@@ -207,7 +207,7 @@ export function runGuardrails(
 }
 
 /**
- * Scans raw string or object content — used by the /api/moltwall/scan endpoint
+ * Scans raw string or object content -used by the /api/moltwall/scan endpoint
  * to inspect tool outputs and LLM responses.
  */
 export function scanContent(

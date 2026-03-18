@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { GridCanvas } from "@/components/ui/GridCanvas";
 import { Navbar } from "@/components/landing/Navbar";
@@ -47,11 +50,45 @@ const HOW_IT_WORKS = [
   { step: "02", label: "Policy Check", desc: "Tool allowlist, blocked actions, and spend limits are evaluated instantly from Redis cache." },
   { step: "03", label: "Risk Score", desc: "Payload is scored across 8 weighted factors including source provenance and argument analysis." },
   { step: "04", label: "Guardrail Scan", desc: "Prompt injection, credential patterns, and PII are scanned recursively across nested arguments." },
-  { step: "05", label: "Decision", desc: "Allow, Deny, Sandbox, or Require Confirmation — returned in <10ms with a full explanation." },
+  { step: "05", label: "Decision", desc: "Allow, Deny, Sandbox, or Require Confirmation -returned in <10ms with a full explanation." },
   { step: "06", label: "Audit Log", desc: "Every decision persisted to Supabase with full trace. Query and export from the dashboard." },
 ];
 
 export default function LandingPage() {
+  const [threatsBlocked, setThreatsBlocked] = useState(14892301);
+  const [logs, setLogs] = useState<{ id: number; agent: string; tool: string; action: string; time: string; status: "ALLOW" | "BLOCK" | "SANDBOX" }[]>([]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setThreatsBlocked(prev => prev + Math.floor(Math.random() * 4) + 1);
+    }, 1800);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    // Generate mock tail-logs of agent activity
+    const agents = ["TradingBot-V4", "ResearchAgent", "CustomerSupport-AI", "DataScraper-09", "AutoGPT-Core", "LangGraph-Sync"];
+    const tools = ["execute_sql", "send_email", "transfer_funds", "read_file", "aws_ec2_term", "ssh_connect"];
+    const sysActions = ["Read DB", "SMTP Send", "Stripe API", "FS Access", "AWS SDK", "Bash"];
+
+    let idCounter = 0;
+    const interval = setInterval(() => {
+      const isBlock = Math.random() > 0.7; // 30% blocks
+      const newLog = {
+        id: idCounter++,
+        agent: agents[Math.floor(Math.random() * agents.length)],
+        tool: tools[Math.floor(Math.random() * tools.length)],
+        action: sysActions[Math.floor(Math.random() * sysActions.length)],
+        time: new Date().toISOString().substring(11, 23),
+        status: isBlock ? "BLOCK" : (Math.random() > 0.9 ? "SANDBOX" : "ALLOW") as any
+      };
+
+      setLogs(prev => [newLog, ...prev].slice(0, 7)); // keep last 7
+    }, 800);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="bg-black text-white min-h-screen font-sans overflow-x-hidden">
 
@@ -62,59 +99,159 @@ export default function LandingPage() {
       <div className="h-[80px]" />
 
       {/* ── Hero ────────────────────────────────────────────────────────────── */}
-      <section className="relative min-h-[calc(100vh-80px)] flex flex-col items-center justify-center overflow-hidden">
+      <section className="relative min-h-[calc(100vh-80px)] pt-16 pb-24 flex flex-col items-center justify-center overflow-hidden">
         <GridCanvas />
 
-        {/* Kanji watermark */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
-          <span className="text-[22rem] font-black text-[#FFC400]/[0.03] leading-none font-display">鎧</span>
+        {/* Subtle glowing orb in background */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[60vh] bg-[#FFC400]/[0.05] rounded-[100%] blur-[120px] pointer-events-none" />
+
+        {/* Kanji watermark - moved back/opacity lowered */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden mix-blend-screen opacity-20">
+          <span className="text-[35rem] font-black text-[#FFC400]/[0.03] leading-none font-display">鎧</span>
         </div>
 
-        <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
+        <div className="relative z-10 w-full px-6 max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-20 items-center">
 
-          {/* Headline */}
-          <h1 className="font-display font-black text-white leading-[0.92] uppercase mb-6">
-            <span className="block text-[clamp(3.5rem,10vw,7.5rem)]">SECURE EVERY</span>
-            <span className="block text-[clamp(3.5rem,10vw,7.5rem)] text-[#FFC400]">AGENT ACTION</span>
-            <span className="block text-[clamp(3.5rem,10vw,7.5rem)]">BEFORE IT FIRES</span>
-          </h1>
+          {/* Left Column: Text & CTA */}
+          <div className="text-left mt-8 lg:mt-0">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FFC400]/10 border border-[#FFC400]/20 mb-8 overflow-hidden backdrop-blur-sm shadow-[0_0_15px_rgba(255,196,0,0.1)]">
+              <span className="w-2 h-2 rounded-full bg-[#FFC400] animate-[pulse_1.5s_infinite]" />
+              <span className="text-[#FFC400] text-xs font-bold tracking-widest uppercase">MoltWall Core Active</span>
+            </div>
 
-          <p className="text-[#777] text-lg max-w-2xl mx-auto leading-relaxed mb-10">
-            MoltWall 鎧 is a production-grade security firewall for AI agents. Every tool call evaluated, every threat blocked, every decision audited — in under 10ms.
-          </p>
+            <h1 className="font-display font-black text-white leading-[0.92] uppercase mb-8">
+              <span className="block text-[clamp(3.5rem,7vw,6.5rem)] text-white/95">SECURE EVERY</span>
+              <span className="block text-[clamp(3.5rem,7vw,6.5rem)] text-[#FFC400] drop-shadow-[0_0_30px_rgba(255,196,0,0.4)]">AGENT ACTION</span>
+              <span className="block text-[clamp(3.5rem,7vw,6.5rem)]">BEFORE IT FIRES</span>
+            </h1>
 
-          <div className="flex items-center justify-center gap-4 flex-wrap">
-            <Link href="/dashboard"
-              className="inline-flex items-center gap-2.5 bg-[#FFC400] text-black font-black text-[13px] uppercase tracking-widest px-8 py-4 rounded-xl hover:bg-[#e6b000] transition-all font-display shadow-[0_0_40px_rgba(255,196,0,0.2)]">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M8 1L1.5 4v4.5c0 3.5 2.8 5.8 6.5 6.5 3.7-.7 6.5-3 6.5-6.5V4L8 1z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-                <path d="M5 8l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              Launch Dashboard
-            </Link>
-            <Link href="/docs"
-              className="inline-flex items-center gap-2 text-[13px] font-bold uppercase tracking-widest px-8 py-4 rounded-xl border border-[#2a2a2a] text-[#888] hover:text-white hover:border-[#444] transition-all font-display">
-              Read Docs →
-            </Link>
-          </div>
+            <p className="text-[#999] text-[clamp(1.1rem,1.5vw,1.25rem)] max-w-2xl leading-relaxed mb-12">
+              <span className="text-white font-bold">MoltWall 鎧</span> is a production-grade security firewall for AI agents. Every tool call evaluated, every threat blocked, every decision audited -in under <span className="text-[#FFC400] font-bold">10ms</span>.
+            </p>
 
-          {/* Stats row */}
-          <div className="mt-16 flex items-center justify-center gap-0 flex-wrap max-w-2xl mx-auto border border-[#1e1e1e] rounded-2xl overflow-hidden bg-[#0a0a0a]/80 backdrop-blur-sm divide-x divide-[#1e1e1e]">
-            {([
-              { val: "<10ms", label: "Avg Latency" },
-              { val: "8+", label: "Threat Vectors" },
-              { val: "4", label: "Decision Types" },
-              { val: "100%", label: "Audit Coverage" },
-            ] as const).map((s) => (
-              <div key={s.label} className="flex-1 px-5 py-4 text-center min-w-[100px]">
-                <p className="font-display font-black text-xl text-[#FFC400]">{s.val}</p>
-                <p className="text-[11px] text-[#555] uppercase tracking-wider mt-0.5 font-sans">{s.label}</p>
+            <div className="flex items-center gap-5 flex-wrap">
+              <Link href="/dashboard"
+                className="group relative inline-flex items-center justify-center gap-2 bg-[#FFC400] text-black font-black text-[15px] uppercase tracking-widest px-10 py-5 rounded-xl transition-all hover:bg-[#ffe166] hover:scale-[1.02] active:scale-95 font-display overflow-hidden shadow-[0_0_40px_rgba(255,196,0,0.35)] hover:shadow-[0_0_60px_rgba(255,196,0,0.5)]">
+                Deploy Firewall Now
+                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+              </Link>
+              <Link href="/docs"
+                className="inline-flex items-center justify-center gap-2 text-[15px] font-bold uppercase tracking-widest px-10 py-5 rounded-xl border border-[#333] bg-[#050505] text-[#888] hover:text-white hover:border-[#666] transition-all font-display">
+                Read Documentation
+              </Link>
+            </div>
+
+            {/* Stats row */}
+            <div className="mt-16 flex items-center justify-start gap-10 flex-wrap">
+              <div className="flex flex-col">
+                <span className="text-[2.5rem] font-black text-white font-display flex items-baseline gap-1">
+                  10<span className="text-xl text-[#FFC400]">ms</span>
+                </span>
+                <span className="text-[11px] text-[#666] font-bold uppercase tracking-widest">Avg Latency</span>
               </div>
-            ))}
+              <div className="w-px h-12 bg-[#222]" />
+              <div className="flex flex-col">
+                <span className="text-[2.5rem] font-black text-white font-display flex items-baseline gap-1 font-mono tracking-tight">
+                  {threatsBlocked.toLocaleString()}
+                </span>
+                <span className="text-[11px] text-[#666] font-bold uppercase tracking-widest flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.8)]" /> Threats Blocked
+                </span>
+              </div>
+            </div>
           </div>
+
+          {/* Right Column: Terminal UI */}
+          <div className="relative w-full lg:max-w-none max-w-[600px] mx-auto z-20">
+            {/* Ambient terminal glow */}
+            <div className="absolute -inset-0.5 bg-gradient-to-br from-[#FFC400]/40 via-transparent to-red-500/30 rounded-2xl blur-xl opacity-60 pointer-events-none" />
+
+            <div className="relative bg-[#080808] border border-[#2a2a2a] rounded-2xl overflow-hidden shadow-2xl flex flex-col h-[460px] lg:h-[520px]">
+
+              {/* Terminal Header */}
+              <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#1f1f1f] bg-[#000]">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-500/80 shadow-[0_0_8px_rgba(239,68,68,0.5)] hover:bg-red-400 transition-colors cursor-pointer" />
+                  <div className="w-3 h-3 rounded-full bg-[#FFC400]/80 shadow-[0_0_8px_rgba(255,196,0,0.5)] hover:bg-[#FFC400] transition-colors cursor-pointer" />
+                  <div className="w-3 h-3 rounded-full bg-green-500/80 shadow-[0_0_8px_rgba(34,197,94,0.5)] hover:bg-green-400 transition-colors cursor-pointer" />
+                </div>
+                <div className="flex text-[11px] font-mono text-[#666] items-center gap-2 uppercase tracking-widest font-bold">
+                  <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(34,197,94,1)]" />
+                  prod-firewall-us-east-1
+                </div>
+              </div>
+
+              {/* Terminal Body */}
+              <div className="flex-1 p-5 overflow-hidden font-mono text-xs flex flex-col relative w-full">
+
+                {/* Column Headers */}
+                <div className="grid grid-cols-12 gap-3 text-[#555] pb-3 border-b border-[#1a1a1a] uppercase font-bold tracking-[0.2em] text-[9px] w-full">
+                  <div className="col-span-2">Time</div>
+                  <div className="col-span-4">Agent Identity</div>
+                  <div className="col-span-3">Tool Target</div>
+                  <div className="col-span-3 text-right">Policy Decision</div>
+                </div>
+
+                {/* Log Feed */}
+                <div className="flex flex-col-reverse justify-start gap-2 pt-3 flex-1 relative z-10 w-full overflow-hidden">
+                  {logs.map((log) => (
+                    <div key={log.id} className="grid grid-cols-12 gap-3 items-center py-2 border-b border-[#111] last:border-0 hover:bg-[#111] transition-colors rounded px-2 -mx-2 w-[calc(100%+16px)] animate-in fade-in slide-in-from-top-2 duration-300">
+                      <div className="col-span-2 text-[#666]">{log.time}</div>
+                      <div className="col-span-4 text-[#bbb] truncate pe-2" title={log.agent}>{log.agent}</div>
+                      <div className="col-span-3 text-[#888] truncate pe-2" title={log.tool}>{log.tool}</div>
+                      <div className="col-span-3 text-right flex justify-end">
+                        {log.status === "BLOCK" && (
+                          <span className="inline-flex items-center gap-1.5 text-red-500 font-bold bg-red-500/10 px-2 py-0.5 rounded border border-red-500/20 text-[10px] uppercase shadow-[0_0_10px_rgba(239,68,68,0.15)] relative overflow-hidden group">
+                            <span className="absolute inset-0 w-full h-full bg-red-500/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500" />
+                            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" /></svg>
+                            BLOCKED
+                          </span>
+                        )}
+                        {log.status === "ALLOW" && (
+                          <span className="inline-flex items-center gap-1.5 text-green-500 font-bold bg-green-500/10 px-2 py-0.5 rounded border border-green-500/20 text-[10px] uppercase">
+                            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                            ALLOW
+                          </span>
+                        )}
+                        {log.status === "SANDBOX" && (
+                          <span className="inline-flex items-center gap-1.5 text-[#FFC400] font-bold bg-[#FFC400]/10 px-2 py-0.5 rounded border border-[#FFC400]/20 text-[10px] uppercase">
+                            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                            SANDBOX
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Fade out top gradient to obscure old logs */}
+                <div className="absolute top-[32px] left-0 right-0 h-24 bg-gradient-to-b from-[#080808] to-transparent z-20 pointer-events-none" />
+              </div>
+
+              {/* Terminal Footer */}
+              <div className="px-5 py-3 border-t border-[#1f1f1f] bg-[#030303] flex justify-between items-center">
+                <div className="text-[10px] text-[#555] font-mono flex items-center gap-3">
+                  <span className="flex gap-2">Agent Contexts: <span className="text-[#eee]">4,213</span></span>
+                  <span className="text-[#333]">|</span>
+                  <span className="flex gap-2">Rules Active: <span className="text-[#FFC400]">89</span></span>
+                </div>
+                <div className="flex items-center gap-2 text-[10px] font-mono text-[#555]">
+                  <span className="flex items-center gap-1">
+                    <svg className="w-3 h-3 text-[#FFC400]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                    <span>{threatsBlocked > 0 ? (threatsBlocked / 1000).toFixed(1) + 'k/s' : '0/s'}</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Overlay Grid on terminal */}
+            <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-5 pointer-events-none z-30 mix-blend-overlay rounded-2xl" />
+          </div>
+
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent pointer-events-none" />
+        {/* Bottom fade transition */}
+        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#050505] to-transparent pointer-events-none z-10" />
       </section>
 
       {/* ── Features ────────────────────────────────────────────────────────── */}
@@ -251,14 +388,14 @@ if (result.decision === "allow") {
           <p className="text-[#666] mb-10 max-w-xl mx-auto leading-relaxed">
             Deploy MoltWall at www.moltwall.xyz in minutes. Open source. TypeScript-native. Production firewall from day one.
           </p>
-          <div className="flex items-center justify-center gap-4 flex-wrap">
+          <div className="relative z-50 flex items-center justify-center gap-4 flex-wrap">
             <Link href="/dashboard"
               className="inline-flex items-center gap-2 bg-[#FFC400] text-black font-black text-[13px] uppercase tracking-widest px-8 py-4 rounded-xl hover:bg-[#e6b000] transition-all font-display shadow-[0_0_40px_rgba(255,196,0,0.3)]">
-              Open Dashboard
+              OPEN DASHBOARD
             </Link>
             <Link href="/docs"
               className="inline-flex items-center gap-2 text-[13px] font-bold uppercase tracking-widest px-8 py-4 rounded-xl border border-[#2a2a2a] text-[#777] hover:text-white hover:border-[#444] transition-all font-display">
-              Documentation
+              DOCUMENTATION
             </Link>
           </div>
         </div>

@@ -1,4 +1,4 @@
--- AgentWall — Guardrail Engine Migration
+-- AgentWall -Guardrail Engine Migration
 -- Adds guardrail-related columns to the actions table and creates scan_logs.
 -- Run after 001_initial.sql
 

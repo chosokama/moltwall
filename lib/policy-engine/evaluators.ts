@@ -162,7 +162,7 @@ export function evaluateActionPermission(
   return {
     allowed: true,
     reason: isSensitive
-      ? `Action "${action}" is sensitive — elevated scrutiny applied`
+      ? `Action "${action}" is sensitive -elevated scrutiny applied`
       : `Action "${action}" is permitted`,
     evaluator: "action_permission",
   };

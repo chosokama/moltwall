@@ -326,8 +326,8 @@ paths:
       summary: Evaluate an agent action
       description: |
         The core AgentWall endpoint. Evaluates an agent action against:
-        1. **Policy Engine** — deterministic rules (tool allowlist, blocked actions, domain trust, spend limits)
-        2. **Risk Engine** — weighted scoring (payment risk, unknown tool, sensitive args, intent mismatch, source provenance)
+        1. **Policy Engine** -deterministic rules (tool allowlist, blocked actions, domain trust, spend limits)
+        2. **Risk Engine** -weighted scoring (payment risk, unknown tool, sensitive args, intent mismatch, source provenance)
 
         Returns a `decision` with a `risk_score` and human-readable `reason`.
         Every request is logged for auditing.

@@ -72,10 +72,10 @@ function Table({ headers, rows }: { headers: string[]; rows: string[][] }) {
 
 function Badge({ color, children }: { color: "gold" | "green" | "red" | "gray"; children: React.ReactNode }) {
   const styles = {
-    gold:  "bg-[#FFC400]/15 text-[#FFC400] border-[#FFC400]/30",
+    gold: "bg-[#FFC400]/15 text-[#FFC400] border-[#FFC400]/30",
     green: "bg-[#22c55e]/15 text-[#22c55e] border-[#22c55e]/30",
-    red:   "bg-[#ef4444]/15 text-[#ef4444] border-[#ef4444]/30",
-    gray:  "bg-[#888]/15 text-[#888] border-[#888]/30",
+    red: "bg-[#ef4444]/15 text-[#ef4444] border-[#ef4444]/30",
+    gray: "bg-[#888]/15 text-[#888] border-[#888]/30",
   };
   return (
     <span className={`inline-block text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border font-display ${styles[color]}`}>
@@ -86,8 +86,8 @@ function Badge({ color, children }: { color: "gold" | "green" | "red" | "gray"; 
 
 function Callout({ type = "info", children }: { type?: "info" | "warn" | "danger"; children: React.ReactNode }) {
   const styles = {
-    info:   { bg: "bg-[#FFC400]/6 border-[#FFC400]/25", icon: "⚡", text: "text-[#FFC400]" },
-    warn:   { bg: "bg-[#f97316]/6 border-[#f97316]/25", icon: "⚠", text: "text-[#f97316]" },
+    info: { bg: "bg-[#FFC400]/6 border-[#FFC400]/25", icon: "⚡", text: "text-[#FFC400]" },
+    warn: { bg: "bg-[#f97316]/6 border-[#f97316]/25", icon: "⚠", text: "text-[#f97316]" },
     danger: { bg: "bg-[#ef4444]/6 border-[#ef4444]/25", icon: "✕", text: "text-[#ef4444]" },
   };
   const s = styles[type];
@@ -155,7 +155,7 @@ export default function DocsPage() {
         <Section id="architecture">
           <H2>Architecture</H2>
           <Lead>
-            MoltWall is a stateless Next.js API layer backed by Supabase (Postgres) and Upstash Redis. The request path is fully deterministic — the policy engine and risk engine have no model calls.
+            MoltWall is a stateless Next.js API layer backed by Supabase (Postgres) and Upstash Redis. The request path is fully deterministic -the policy engine and risk engine have no model calls.
           </Lead>
           <Code lang="text">{`
   Agent / SDK
@@ -231,7 +231,7 @@ supabase/migrations/001_initial.sql`}</Code>
     "source": "user"
   }'`}</Code>
           <Callout type="info">
-            If no policy is configured, MoltWall runs in permissive mode — all tools allowed, decisions based on risk score only.
+            If no policy is configured, MoltWall runs in permissive mode -all tools allowed, decisions based on risk score only.
           </Callout>
         </Section>
 
@@ -329,7 +329,7 @@ const { decision, risk_score, reason } = await res.json();`}</Code>
   "should_deny": true
 }`}</Code>
           <Callout type="warn">
-            Indirect sources (<InlineCode>tool</InlineCode>, <InlineCode>web</InlineCode>) trigger stricter denial logic — any high-severity threat causes immediate denial.
+            Indirect sources (<InlineCode>tool</InlineCode>, <InlineCode>web</InlineCode>) trigger stricter denial logic -any high-severity threat causes immediate denial.
           </Callout>
         </Section>
 
@@ -338,11 +338,11 @@ const { decision, risk_score, reason } = await res.json();`}</Code>
           <H2>GET | POST | DELETE /api/policy</H2>
           <Lead>Retrieve, create/update, or delete the organization&apos;s security policy.</Lead>
 
-          <H3>GET — Retrieve policy</H3>
+          <H3>GET -Retrieve policy</H3>
           <Code lang="bash">{`curl /api/policy -H "x-api-key: YOUR_KEY"
 # Returns { policy: PolicyObject | null }`}</Code>
 
-          <H3>POST — Create or update</H3>
+          <H3>POST -Create or update</H3>
           <Table
             headers={["Field", "Type", "Description"]}
             rows={[
@@ -399,10 +399,10 @@ const { decision, risk_score, reason } = await res.json();`}</Code>
           <H2>GET /api/logs</H2>
           <Lead>Query the action audit log with optional filters.</Lead>
           <Code lang="bash">{`# Query params:
-# agent_id   — filter by agent
-# decision   — "allow" | "deny" | "sandbox" | "require_confirmation"
-# limit      — max results (default 50, max 500)
-# offset     — pagination offset
+# agent_id   -filter by agent
+# decision   -"allow" | "deny" | "sandbox" | "require_confirmation"
+# limit      -max results (default 50, max 500)
+# offset     -pagination offset
 
 curl "/api/logs?decision=deny&limit=20" \\
   -H "x-api-key: YOUR_KEY"`}</Code>
@@ -458,7 +458,7 @@ CacheKeys.rateLimit(agentId)  // → "rl:agent:<id>"`}</Code>
             ]}
           />
           <Callout type="info">
-            Final score is <InlineCode>Math.min(1, sum_of_factors)</InlineCode>. A score of 0 is never returned — minimum is 0.02 to reflect inherent uncertainty.
+            Final score is <InlineCode>Math.min(1, sum_of_factors)</InlineCode>. A score of 0 is never returned -minimum is 0.02 to reflect inherent uncertainty.
           </Callout>
         </Section>
 
@@ -502,7 +502,7 @@ CacheKeys.rateLimit(agentId)  // → "rl:agent:<id>"`}</Code>
 
         {/* ──────────────────────────────────────────────────────────────────── */}
         <Section id="sdk-install">
-          <H2>SDK — Installation</H2>
+          <H2>SDK -Installation</H2>
           <Lead>The MoltWall SDK is a thin TypeScript client that wraps the REST API.</Lead>
           <Code lang="bash">{`npm install @MoltWall/sdk
 # or: pnpm add @MoltWall/sdk`}</Code>
@@ -517,7 +517,7 @@ const wall = new MoltWall({
 
         {/* ──────────────────────────────────────────────────────────────────── */}
         <Section id="sdk-check">
-          <H2>SDK — check()</H2>
+          <H2>SDK -check()</H2>
           <Lead>Evaluate an action before execution. This is the core method.</Lead>
           <Code lang="typescript">{`const result = await wall.check({
   action:    "send_email",
@@ -542,7 +542,7 @@ switch (result.decision) {
 
         {/* ──────────────────────────────────────────────────────────────────── */}
         <Section id="sdk-policy">
-          <H2>SDK — setPolicy()</H2>
+          <H2>SDK -setPolicy()</H2>
           <Code lang="typescript">{`await wall.setPolicy({
   allowedTools:        ["browser", "search"],
   blockedActions:      ["delete_account"],
@@ -557,7 +557,7 @@ switch (result.decision) {
 
         {/* ──────────────────────────────────────────────────────────────────── */}
         <Section id="sdk-tools">
-          <H2>SDK — registerTool()</H2>
+          <H2>SDK -registerTool()</H2>
           <Code lang="typescript">{`await wall.registerTool({
   toolId:      "browser-use",
   publisher:   "Anthropic",
@@ -667,7 +667,7 @@ git push origin main
 
 # 2. Import project at vercel.com/new
 # 3. Add environment variables in Vercel dashboard
-# 4. Deploy — done.`}</Code>
+# 4. Deploy -done.`}</Code>
           <Callout type="info">
             All API routes use the <InlineCode>nodejs</InlineCode> runtime. Edge runtime is not supported due to the Supabase client. Each route is independently deployed as a serverless function.
           </Callout>
@@ -705,7 +705,7 @@ git push origin main
             ]}
           />
           <Callout type="info">
-            Create a free Upstash Redis database at <strong className="text-white">upstash.com</strong>. Use the REST API endpoint and token — no connection pooling required.
+            Create a free Upstash Redis database at <strong className="text-white">upstash.com</strong>. Use the REST API endpoint and token -no connection pooling required.
           </Callout>
         </Section>
 

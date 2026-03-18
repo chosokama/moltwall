@@ -72,7 +72,7 @@ async function writePolicyToCache(
 
 /**
  * Fire-and-forget background refresh of a stale cache entry.
- * Any error is isolated — a failed refresh never affects an in-flight request.
+ * Any error is isolated -a failed refresh never affects an in-flight request.
  */
 async function refreshPolicyCacheInBackground(orgId: string): Promise<void> {
   try {
@@ -87,7 +87,7 @@ async function refreshPolicyCacheInBackground(orgId: string): Promise<void> {
   }
 }
 
-// ─── Policy Loading — Stale-While-Revalidate ──────────────────────────────────
+// ─── Policy Loading -Stale-While-Revalidate ──────────────────────────────────
 
 /**
  * Loads a policy for an org with a stale-while-revalidate caching strategy:
@@ -127,11 +127,11 @@ export async function loadPolicy(orgId: string): Promise<Policy | null> {
     return envelope.data;
   }
 
-  // ── 2. Cache Miss — Synchronous DB Fetch ──────────────────────────────────
+  // ── 2. Cache Miss -Synchronous DB Fetch ──────────────────────────────────
   logger.debug("Policy cache miss, fetching from DB", { orgId });
 
   const policy = await fetchPolicyFromDB(orgId);
-  void writePolicyToCache(orgId, policy); // Write asynchronously — don't block response
+  void writePolicyToCache(orgId, policy); // Write asynchronously -don't block response
 
   return policy;
 }

@@ -64,7 +64,7 @@ export type ScanContentType =
 
 export interface ScanRequest {
   agent_id: string;
-  /** The content to scan — string or structured object */
+  /** The content to scan -string or structured object */
   content: string | Record<string, unknown>;
   content_type: ScanContentType;
   source?: string;

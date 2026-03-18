@@ -1,4 +1,4 @@
-// MoltWall TypeScript SDK — Public Type Definitions
+// MoltWall TypeScript SDK -Public Type Definitions
 
 export type DecisionType = "allow" | "deny" | "require_confirmation" | "sandbox";
 

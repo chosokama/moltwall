@@ -1,6 +1,6 @@
 /**
  * MoltWall 鎧 TypeScript SDK
- * Agent Security Firewall — full-stack protection for your AI agents.
+ * Agent Security Firewall -full-stack protection for your AI agents.
  *
  * Usage:
  *   import { MoltWall } from "./sdk/typescript"

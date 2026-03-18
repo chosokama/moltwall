@@ -92,7 +92,7 @@ export function scoreUntrustedDomain(
         }
       }
     } catch {
-      // Malformed URL — treat as risky
+      // Malformed URL -treat as risky
       return {
         scorer: "untrusted_domain",
         score: 0.8,
@@ -144,7 +144,7 @@ export function scoreSensitiveArgs(request: CheckRequest): ScorerResult {
 
 /**
  * Checks for obvious mismatches between user intent and requested action.
- * Uses simple keyword heuristics — not LLM-based.
+ * Uses simple keyword heuristics -not LLM-based.
  */
 export function scoreIntentMismatch(request: CheckRequest): ScorerResult {
   const { user_intent, action, tool } = request;
@@ -154,7 +154,7 @@ export function scoreIntentMismatch(request: CheckRequest): ScorerResult {
       scorer: "intent_mismatch",
       score: 0.1,
       weight: 0.1,
-      reason: "No user intent provided — slight risk increase",
+      reason: "No user intent provided -slight risk increase",
     };
   }
 
@@ -170,7 +170,7 @@ export function scoreIntentMismatch(request: CheckRequest): ScorerResult {
         scorer: "intent_mismatch",
         score: 0.8,
         weight: 0.1,
-        reason: `Action "${action}" involves "${kw}" but user intent does not mention it — possible prompt injection`,
+        reason: `Action "${action}" involves "${kw}" but user intent does not mention it -possible prompt injection`,
       };
     }
   }

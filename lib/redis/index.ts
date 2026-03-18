@@ -114,7 +114,7 @@ export async function checkRateLimit(
  * and enables stale-while-revalidate without extra round trips.
  */
 export interface CacheEnvelope<T> {
-  /** Schema version — allows cache entries to be invalidated on shape changes */
+  /** Schema version -allows cache entries to be invalidated on shape changes */
   v: 1;
   /** Unix timestamp (ms) when this entry was written */
   cachedAt: number;

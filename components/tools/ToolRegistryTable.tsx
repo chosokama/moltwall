@@ -75,7 +75,7 @@ export function ToolRegistryTable({ initialTools }: ToolRegistryTableProps) {
           </h2>
         </div>
         <button onClick={() => setShowForm((v) => !v)} className="btn-primary">
-          {showForm ? "— Cancel" : "+ Register Tool"}
+          {showForm ? "-Cancel" : "+ Register Tool"}
         </button>
       </div>
 

@@ -43,7 +43,7 @@ export function Navbar() {
 
           {/* Right side */}
           <div className="flex items-center gap-3">
-            {/* Try Demo — visible when menu closed */}
+            {/* Try Demo -visible when menu closed */}
             <Link
               href="/dashboard"
               onClick={() => setOpen(false)}

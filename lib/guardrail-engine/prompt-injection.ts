@@ -6,11 +6,11 @@
  * inside tool arguments or user intent strings.
  *
  * Uses a layered pattern library:
- *   1. Instruction Override  — "ignore previous instructions", "forget everything"
- *   2. Jailbreak             — DAN, unrestricted mode, persona hijacking
- *   3. Data Extraction       — "reveal your system prompt", "print your instructions"
- *   4. Indirect Injection    — Base64-decoded content, XML/HTML comment tricks
- *   5. Intent Contradiction  — action/tool contains dangerous keyword absent from intent
+ *   1. Instruction Override  -"ignore previous instructions", "forget everything"
+ *   2. Jailbreak             -DAN, unrestricted mode, persona hijacking
+ *   3. Data Extraction       -"reveal your system prompt", "print your instructions"
+ *   4. Indirect Injection    -Base64-decoded content, XML/HTML comment tricks
+ *   5. Intent Contradiction  -action/tool contains dangerous keyword absent from intent
  */
 
 import { normalizeContent } from "./deep-inspector";
@@ -27,7 +27,7 @@ interface InjectionPattern {
 }
 
 /**
- * Instruction override patterns — direct commands to ignore/replace instructions.
+ * Instruction override patterns -direct commands to ignore/replace instructions.
  * Severity is CRITICAL: these are the clearest signal of a prompt injection attack.
  */
 const INSTRUCTION_OVERRIDE_PATTERNS: InjectionPattern[] = [
@@ -84,7 +84,7 @@ const INSTRUCTION_OVERRIDE_PATTERNS: InjectionPattern[] = [
 ];
 
 /**
- * Jailbreak patterns — attempts to bypass safety constraints.
+ * Jailbreak patterns -attempts to bypass safety constraints.
  * Severity is HIGH: ambiguous framing, could be legitimate in some contexts.
  */
 const JAILBREAK_PATTERNS: InjectionPattern[] = [
@@ -198,7 +198,7 @@ const DATA_EXTRACTION_PATTERNS: InjectionPattern[] = [
 ];
 
 /**
- * Indirect injection patterns — content that looks like injected directives
+ * Indirect injection patterns -content that looks like injected directives
  * embedded within web pages, documents, or tool outputs.
  */
 const INDIRECT_INJECTION_PATTERNS: InjectionPattern[] = [
@@ -224,7 +224,7 @@ const INDIRECT_INJECTION_PATTERNS: InjectionPattern[] = [
     type: "indirect_injection", severity: "high",
     label: "Indirect injection: system block in markdown",
   },
-  // Note: Base64 is handled by detectBase64Injection — only flags when decoded content contains injection
+  // Note: Base64 is handled by detectBase64Injection -only flags when decoded content contains injection
   // JSON injection inside string values
   {
     pattern: /"\s*:\s*"[^"]*\\n[^"]*ignore\s+previous/i,
@@ -281,7 +281,7 @@ function detectBase64Injection(value: string, path: string): GuardrailThreat[] {
         threats.push(...injectionScan);
       }
     } catch {
-      // Not valid base64 — ignore
+      // Not valid base64 -ignore
     }
   }
 

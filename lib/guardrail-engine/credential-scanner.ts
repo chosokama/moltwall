@@ -40,7 +40,7 @@ const CREDENTIAL_PATTERNS: CredentialPattern[] = [
     severity: "critical",
   },
   {
-    // AWS Secret Access Keys are 40 chars, base64-like — require context
+    // AWS Secret Access Keys are 40 chars, base64-like -require context
     name: "AWS Secret Access Key",
     pattern: /(?<![A-Za-z0-9/+=])[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])/,
     severity: "high",
@@ -227,7 +227,7 @@ const CREDENTIAL_PATTERNS: CredentialPattern[] = [
 
   // ── Generic High-Entropy / Hex Secrets ───────────────────────────────────
   {
-    // 32-byte hex = 64 chars — common for tokens/secrets
+    // 32-byte hex = 64 chars -common for tokens/secrets
     name: "32-byte hex secret",
     pattern: /\b[a-f0-9]{64}\b/i,
     severity: "high",
@@ -305,7 +305,7 @@ function detectHighEntropyStrings(value: string, path: string): GuardrailThreat[
           type: "credential_leak",
           severity: "medium",
           field: path,
-          detail: `High-entropy string detected (entropy: ${entropy.toFixed(2)}) — possible secret token`,
+          detail: `High-entropy string detected (entropy: ${entropy.toFixed(2)}) -possible secret token`,
           snippet: redactSnippet(token.slice(0, 12) + "…"),
         });
         break; // One warning per field is enough

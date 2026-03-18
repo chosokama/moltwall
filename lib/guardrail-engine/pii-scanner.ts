@@ -221,7 +221,7 @@ function detectPIICluster(threats: GuardrailThreat[]): GuardrailThreat[] {
         type: "pii_exposure",
         severity: "critical",
         field,
-        detail: `PII cluster detected: ${fieldThreats.length} distinct PII types in a single field — high confidence data exfiltration`,
+        detail: `PII cluster detected: ${fieldThreats.length} distinct PII types in a single field -high confidence data exfiltration`,
         snippet: fieldThreats.map((t) => t.detail).slice(0, 3).join(", "),
       });
     }
