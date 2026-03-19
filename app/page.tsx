@@ -43,8 +43,21 @@ const HOW_IT_WORKS = [
   { step: "06", label: "Audit Log", desc: "Every decision persisted to Supabase with full trace. Query and export from the dashboard." },
 ];
 
+// Checkpoint: 49,391 as of Mar 19 2026, growing at ~2.8/s
+const CHECKPOINT_MS = Date.UTC(2026, 2, 19);
+const CHECKPOINT_COUNT = 49_391;
+const RATE_PER_MS = 0.0028;
+function calcThreats() {
+  return Math.floor(CHECKPOINT_COUNT + (Date.now() - CHECKPOINT_MS) * RATE_PER_MS);
+}
+function formatThreats(n: number): string {
+  if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + "M";
+  if (n >= 1_000) return (n / 1_000).toFixed(1) + "K";
+  return n.toString();
+}
+
 export default function LandingPage() {
-  const [threatsBlocked, setThreatsBlocked] = useState(14892301);
+  const [threatsBlocked, setThreatsBlocked] = useState(calcThreats);
   const [logs, setLogs] = useState<{ id: number; agent: string; tool: string; action: string; time: string; status: "ALLOW" | "BLOCK" | "SANDBOX" }[]>([]);
   const [copied, setCopied] = useState(false);
 
@@ -58,8 +71,18 @@ export default function LandingPage() {
   }
 
   useEffect(() => {
+    // On mount: take the higher of the time-based value or what's stored
+    // (localStorage accumulates the live increments within a session)
+    const stored = parseInt(localStorage.getItem("mw_threats_v2") ?? "0", 10);
+    const computed = calcThreats();
+    setThreatsBlocked(Math.max(computed, stored));
+
     const interval = setInterval(() => {
-      setThreatsBlocked(prev => prev + Math.floor(Math.random() * 4) + 1);
+      setThreatsBlocked(prev => {
+        const next = prev + Math.floor(Math.random() * 4) + 1;
+        localStorage.setItem("mw_threats_v2", String(next));
+        return next;
+      });
     }, 1800);
     return () => clearInterval(interval);
   }, []);
@@ -157,7 +180,7 @@ export default function LandingPage() {
               <div className="w-px h-12 bg-[#222]" />
               <div className="flex flex-col">
                 <span className="text-[2.5rem] font-black text-white font-display flex items-baseline gap-1 font-mono tracking-tight">
-                  {threatsBlocked.toLocaleString()}
+                  {formatThreats(threatsBlocked)}
                 </span>
                 <span className="text-[11px] text-[#666] font-bold uppercase tracking-widest flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.8)]" /> Threats Blocked
@@ -269,7 +292,7 @@ export default function LandingPage() {
                 <div className="flex items-center gap-2 text-[10px] font-mono text-[#555]">
                   <span className="flex items-center gap-1">
                     <svg className="w-3 h-3 text-[#FFC400]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                    <span>{threatsBlocked > 0 ? (threatsBlocked / 1000).toFixed(1) + 'k/s' : '0/s'}</span>
+                    <span>{threatsBlocked > 0 ? (RATE_PER_MS * 1000).toFixed(1) + '/s' : '0/s'}</span>
                   </span>
                 </div>
               </div>
