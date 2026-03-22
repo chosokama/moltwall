@@ -9,7 +9,7 @@ const NAV_ITEMS = [
   { label: "Docs", href: "/docs" },
   { label: "Dashboard", href: "/dashboard" },
   { label: "Roadmap", href: "/roadmap" },
-  { label: "GitHub", href: "https://github.com/moltwall/moltwall", external: true },
+  { label: "GitHub", href: "https://github.com/moltwall", external: true },
   { label: "npm", href: "https://www.npmjs.com/package/@moltwall/sdk", external: true },
 ];
 
@@ -116,7 +116,7 @@ export function Navbar() {
                         <div>
                           <p className="text-[13px] font-bold text-white tracking-wide">{item.label}</p>
                           <p className="text-[11px] text-[#444] font-mono mt-0.5 tracking-wider">{
-                            item.label === "GitHub" ? "↗ github.com/moltwall/moltwall" :
+                            item.label === "GitHub" ? "↗ github.com/moltwall" :
                             item.label === "npm" ? "↗ npmjs.com/package/@moltwall/sdk" : "↗ EXTERNAL"
                           }</p>
                         </div>
