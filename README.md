@@ -132,7 +132,7 @@ const wall = new MoltWall({
   baseUrl: "https://www.moltwall.xyz",
 })
 
-// Evaluate an action before executing it
+// Intercept and evaluate the agent action before execution
 const result = await wall.check({
   agent_id: "agent-001",
   action: "transfer",
